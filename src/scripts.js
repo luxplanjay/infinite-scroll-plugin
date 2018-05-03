@@ -1,18 +1,31 @@
-window.addEventListener('DOMContentLoaded', () => {
-  window.addEventListener(
-    'scroll',
-    handleScroll.bind(null, document.documentElement, addItems),
-  );
-});
+class IScroll {
+  constructor({ container, action }) {
+    this.container = container;
+    this.onScrollCallback = action;
 
-function handleScroll(el, cb, evt) {
-  const scrollDiff = el.scrollHeight - (el.scrollTop + el.clientHeight);
+    this.initScrollListener();
+  }
 
-  if (scrollDiff < 100) {
-    console.log('qwewe');
-    cb();
+  initScrollListener() {
+    window.addEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+  handleScroll() {
+    const { scrollHeight, scrollTop, clientHeight } = this.container;
+
+    const scrollDiff = scrollHeight - (scrollTop + clientHeight);
+
+    if (scrollDiff < 100) {
+      console.log('loading new items...');
+      this.onScrollCallback();
+    }
   }
 }
+
+new IScroll({
+  container: document.documentElement,
+  action: addItems,
+});
 
 function addItems() {
   const list = document.querySelector('.list');
