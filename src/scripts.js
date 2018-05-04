@@ -1,9 +1,32 @@
+ /**
+* Infinite Scroll Class
+*
+* @class IScroll
+*
+* @constructor
+* @param config {Object} Instance configuration
+*
+* @config
+* @param action {Function} Scroll threshold callback
+* @param scrollThresholdPx {Number} Amount of pixels to the bottom fo the container
+* @param isAsync {Boolean}
+* @param showLoader {Boolean}
+*
+* @throws {}
+*/
 class IScroll {
-  constructor({ action, scrollThresholdPx = 100 }) {
+  constructor({
+    action,
+    scrollThresholdPx = 100,
+    isAsync = true,
+    showLoader = false,
+  }) {
     this.container = document.documentElement;
     this.onScrollCallback = action;
     this.scrollDiff = scrollThresholdPx;
     this.isLoading = false;
+    this.isAsync = isAsync;
+    this.showLoader = showLoader;
 
     this.initScrollListener();
   }
@@ -25,10 +48,7 @@ class IScroll {
   }
 }
 
-new IScroll({
-  action: addItems,
-  scrollThresholdPx: 150,
-});
+new IScroll({ action: addItems });
 
 function addItems() {
   const list = document.querySelector('.list');
